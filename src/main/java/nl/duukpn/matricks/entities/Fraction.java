@@ -1,4 +1,4 @@
-package com.github.duukpn.matricks.entities;
+package nl.duukpn.matricks.entities;
 
 public class Fraction extends Number implements Comparable<Fraction> {
 
@@ -18,6 +18,19 @@ public class Fraction extends Number implements Comparable<Fraction> {
     public Fraction(int number) {
         numerator = number;
         denominator = 1;
+    }
+
+    public static Fraction parseFraction(String string) {
+        try {
+            return new Fraction(Integer.parseInt(string));
+        } catch (NumberFormatException e) {
+            String[] numbers = string.split("/");
+            try {
+                return new Fraction(Integer.parseInt(numbers[0], Integer.parseInt(numbers[1])));
+            } catch (NumberFormatException | ArrayIndexOutOfBoundsException err) {
+                return null;
+            }
+        }
     }
 
     public int getNumerator() {
@@ -79,17 +92,24 @@ public class Fraction extends Number implements Comparable<Fraction> {
         }
     }
 
+    @Override
+    public String toString() {
+        //TODO implement
+        return null;
+    }
+
+    @Override
+    public int compareTo(Fraction frac) {
+        //TODO implement
+        return 0;
+    }
+
     private static int gcd(int a, int b) {
         return b == 0 ? a : gcd(b, a % b);
     }
 
     private static int lcm(int a, int b) {
         return (a * b) / gcd(a, b);
-    }
-
-    @Override
-    public int compareTo(Fraction frac) {
-        return 0;
     }
 
     @Override
