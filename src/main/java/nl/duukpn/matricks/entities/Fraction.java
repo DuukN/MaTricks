@@ -20,15 +20,15 @@ public class Fraction extends Number implements Comparable<Fraction> {
         denominator = 1;
     }
 
-    public static Fraction parseFraction(String string) {
+    public static Fraction parseFraction(String string) throws FractionFormatException {
         try {
             return new Fraction(Integer.parseInt(string));
         } catch (NumberFormatException e) {
             String[] numbers = string.split("/");
             try {
-                return new Fraction(Integer.parseInt(numbers[0], Integer.parseInt(numbers[1])));
+                return new Fraction(Integer.parseInt(numbers[0]), Integer.parseInt(numbers[1]));
             } catch (NumberFormatException | ArrayIndexOutOfBoundsException err) {
-                return null;
+                throw new FractionFormatException("Number has illegal format");
             }
         }
     }
@@ -94,14 +94,13 @@ public class Fraction extends Number implements Comparable<Fraction> {
 
     @Override
     public String toString() {
-        //TODO implement
-        return null;
+        if (denominator == 1) return String.valueOf(numerator);
+        return numerator + "/" + denominator;
     }
 
     @Override
     public int compareTo(Fraction frac) {
-        //TODO implement
-        return 0;
+        return Double.compare(this.doubleValue(), frac.doubleValue());
     }
 
     private static int gcd(int a, int b) {
@@ -139,6 +138,12 @@ public class Fraction extends Number implements Comparable<Fraction> {
     @Override
     public float floatValue() {
         return (float) doubleValue();
+    }
+
+    public static class FractionFormatException extends Exception {
+        private FractionFormatException(String message) {
+            super(message);
+        }
     }
 
 }

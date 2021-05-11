@@ -23,7 +23,11 @@ public class Matrix {
             String[] line = sc.nextLine().split("\\s+");
             if (line.length != width) throw new MatrixFormatException("Matrix has illegal format");
             for (int j = 0; j < width; j++) {
-                matrix.elements[i][j] = Fraction.parseFraction(line[j]);
+                try {
+                    matrix.elements[i][j] = Fraction.parseFraction(line[j]);
+                } catch (Fraction.FractionFormatException e) {
+                    throw new MatrixFormatException(e.getMessage());
+                }
             }
         }
         return matrix;
@@ -31,12 +35,18 @@ public class Matrix {
 
     @Override
     public String toString() {
-        //TODO implement
-        return null;
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < elements.length; i++) {
+            for (int j = 0; j < elements[0].length; j++) {
+                sb.append(elements[i][j].toString()).append(" ");
+            }
+            if (i < elements.length - 1) sb.append("\n");
+        }
+        return sb.toString();
     }
 
     public static class MatrixFormatException extends Exception {
-        public MatrixFormatException(String message) {
+        private MatrixFormatException(String message) {
             super(message);
         }
     }
